@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         mPoetryArrayList = new ArrayList<>(androidList);
         Poetry mPoetry = mPoetryArrayList.get(1);
-        String poetry = mPoetry.getLines();
-        poetryLines.setText(poetry);
+        String author = mPoetry.getAuthor();
+        poetryLines.setText(author);
 
     }
 

@@ -1,5 +1,7 @@
 package com.poussiere.onedayonepoetry;
 
+import java.util.ArrayList;
+
 /**
  * Created by poussiere on 16/10/17.
  */
@@ -8,9 +10,9 @@ public class Poetry {
 
     private String title;
     private String author;
-    private String lines;
+    private ArrayList<String>lines;
 
-    public Poetry (String t, String a, String l ){
+    public Poetry (String t, String a, ArrayList<String> l ){
         title=t;
         author=a;
         lines=l;
@@ -24,7 +26,7 @@ public class Poetry {
         return author;
     }
 
-    public String getLines(){
+    public ArrayList<String> getLines(){
         return lines;
     }
 
