@@ -1,8 +1,10 @@
 package com.poussiere.onedayonepoetry;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +30,14 @@ public class MainActivity extends AppCompatActivity {
     private Random random = new Random();
     private int randomNumber;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCompositeDisposable = new CompositeDisposable();
         poetryLines=(TextView)findViewById(R.id.poetry_lines);
+
 
 
         PoetryRequest poetryRequest = new Retrofit.Builder()
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPoetryArrayList = new ArrayList<>(list);
 
-        randomNumber = random.nextInt(list.size());
+        randomNumber = random.nextInt(mPoetryArrayList.size());
         Poetry mPoetry = mPoetryArrayList.get(randomNumber);
         String lines=mPoetry.getAllStrings();
         poetryLines.setText(lines);
@@ -66,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
         Log.e("main", ""+ error.getLocalizedMessage());
     }
 
+
+    public void onFabClick(View v)
+    {
+        if (mPoetryArrayList != null){
+            randomNumber = random.nextInt(mPoetryArrayList.size());
+            Poetry mPoetry = mPoetryArrayList.get(randomNumber);
+            String lines=mPoetry.getAllStrings();
+            poetryLines.setText(lines);
+        }
+
+    }
 
     @Override
     public void onDestroy() {

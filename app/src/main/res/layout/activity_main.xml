@@ -28,13 +28,16 @@
     </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
         android:clickable="true"
         android:tint="@android:color/white"
+        android:onClick="onFabClick"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"

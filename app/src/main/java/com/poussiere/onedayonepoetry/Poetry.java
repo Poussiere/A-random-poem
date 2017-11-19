@@ -47,6 +47,8 @@ public class Poetry {
             allStrings = allStrings + s +"\n";
         }
 
+        //Not clean but let the end of the text not to be hidden by the FAB button
+        allStrings=allStrings+"\n\n\n\n\n\n";
         return allStrings;
     }
 
