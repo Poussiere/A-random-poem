@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable mCompositeDisposable;
     private ArrayList <Poetry> mPoetryArrayList;
     private TextView poetryLines;
-
+    private Random random = new Random();
+    private int randomNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +49,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void handleResponse(List<Poetry> androidList) {
+    private void handleResponse(List<Poetry> list) {
 
-        mPoetryArrayList = new ArrayList<>(androidList);
-        Poetry mPoetry = mPoetryArrayList.get(1);
-        String author = mPoetry.getAuthor();
-        poetryLines.setText(author);
+        mPoetryArrayList = new ArrayList<>(list);
+
+        randomNumber = random.nextInt(list.size());
+        Poetry mPoetry = mPoetryArrayList.get(randomNumber);
+        String lines=mPoetry.getAllStrings();
+        poetryLines.setText(lines);
 
     }
 
     private void handleError(Throwable error) {
 
-        Toast.makeText(this, "Error while loading your poetry"+error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Error while loading your poetry", Toast.LENGTH_LONG).show();
         Log.e("main", ""+ error.getLocalizedMessage());
     }
+
 
     @Override
     public void onDestroy() {
