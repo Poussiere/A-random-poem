@@ -1,6 +1,6 @@
 
 
-A radom poem is just a small android app that displays a random poem when the user clicks on a button. 
+A random poem is just a small android app that displays a random poem when the user clicks on a button.
 The poems are randomly selected from an Internet database of thousands of poems. 
 
 This app is an exemple of how RXjava2 and retrofit2 can work together. 
