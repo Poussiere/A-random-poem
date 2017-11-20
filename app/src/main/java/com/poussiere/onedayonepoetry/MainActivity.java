@@ -24,11 +24,13 @@ import static com.poussiere.onedayonepoetry.PoetryRequest.BASE_URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String LIFECYCLE_CALLBACKS_KEY = "callbacks";
     private CompositeDisposable mCompositeDisposable;
-    private ArrayList <Poetry> mPoetryArrayList;
+    private ArrayList<Poetry> mPoetryArrayList;
     private TextView poetryLines;
     private Random random = new Random();
     private int randomNumber;
+    private String savedPoem;
 
 
     @Override
@@ -36,10 +38,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCompositeDisposable = new CompositeDisposable();
-        poetryLines=(TextView)findViewById(R.id.poetry_lines);
+        poetryLines = (TextView) findViewById(R.id.poetry_lines);
 
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(LIFECYCLE_CALLBACKS_KEY)) {
+            savedPoem = savedInstanceState.getString(LIFECYCLE_CALLBACKS_KEY);
+            poetryLines.setText(savedPoem);
 
+
+        }
         PoetryRequest poetryRequest = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -49,36 +56,39 @@ public class MainActivity extends AppCompatActivity {
         mCompositeDisposable.add(poetryRequest.register()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse, this::handleError));
+
 
     }
 
     private void handleResponse(List<Poetry> list) {
 
         mPoetryArrayList = new ArrayList<>(list);
+        if (savedPoem == null) {
+            displayRandomPoem();
+        }
 
-        randomNumber = random.nextInt(mPoetryArrayList.size());
-        Poetry mPoetry = mPoetryArrayList.get(randomNumber);
-        String lines=mPoetry.getAllStrings();
-        poetryLines.setText(lines);
 
+    }
+
+    private void displayRandomPoem() {
+        if (mPoetryArrayList != null) {
+            randomNumber = random.nextInt(mPoetryArrayList.size());
+            Poetry mPoetry = mPoetryArrayList.get(randomNumber);
+            String lines = mPoetry.getAllStrings();
+            poetryLines.setText(lines);
+        }
     }
 
     private void handleError(Throwable error) {
 
         Toast.makeText(this, "Error while loading your poetry", Toast.LENGTH_LONG).show();
-        Log.e("main", ""+ error.getLocalizedMessage());
+        Log.e("main", "" + error.getLocalizedMessage());
     }
 
 
-    public void onFabClick(View v)
-    {
-        if (mPoetryArrayList != null){
-            randomNumber = random.nextInt(mPoetryArrayList.size());
-            Poetry mPoetry = mPoetryArrayList.get(randomNumber);
-            String lines=mPoetry.getAllStrings();
-            poetryLines.setText(lines);
-        }
+    public void onFabClick(View v) {
+        displayRandomPoem();
 
     }
 
@@ -86,6 +96,15 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         mCompositeDisposable.clear();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle b) {
+        super.onSaveInstanceState(b);
+        String savedPoem = poetryLines.getText().toString();
+        if (!savedPoem.equals("")) {
+            b.putString(LIFECYCLE_CALLBACKS_KEY, savedPoem);
+        }
     }
 
 
